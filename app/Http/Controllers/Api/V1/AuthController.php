@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Repositories\AuthRepository;
+use App\Repositories\_Auth\AuthRepository;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -17,6 +17,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+        dd($request->all());
         return $this->authService->login($request);
     }
 
