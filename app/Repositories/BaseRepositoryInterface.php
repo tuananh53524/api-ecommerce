@@ -8,14 +8,14 @@ interface BaseRepositoryInterface
      * Get all
      * @return mixed
      */
-    public function all();
+    public function getAll();
 
     /**
      * Get one
      * @param $id
      * @return mixed
      */
-    public function find($id);
+    public function findById($id);
 
     /**
      * Create

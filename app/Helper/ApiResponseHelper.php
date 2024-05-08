@@ -1,11 +1,11 @@
 <?php
-namespace App\Services\_Response;
+
+namespace App\Helper;
 
 use Illuminate\Http\JsonResponse;
 
-abstract class ApiResponseRepository implements ApiResponseInterface
-{
-    public function sendErrorResponse($message, $code = 400, $status=false, $errors = null): JsonResponse
+Class ApiResponseHelper {
+    public static function sendErrorResponse($message, $code = 400, $status=false, $errors = null): JsonResponse
     {
         return response()->json([
             'message' => $message,
@@ -14,7 +14,7 @@ abstract class ApiResponseRepository implements ApiResponseInterface
         ], $code);
     }
 
-    public function sendSuccessResponse($data, $code = 200, $status=true, $message = ''): JsonResponse
+    public static function sendSuccessResponse($data, $code = 200, $status=true, $message = ''): JsonResponse
     {   
         return response()->json([
             'status' => $status,

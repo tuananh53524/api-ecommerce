@@ -3,7 +3,9 @@ namespace App\Repositories\_Auth;
 
 use App\Repositories\BaseRepositoryInterface;
 
-interface AuthRepositoryInterface
+interface AuthRepositoryInterface extends BaseRepositoryInterface
 {
-    public function login($input);
+    public function firstByEmail(string $email);
+
+    public function generateToken(string $email);
 }

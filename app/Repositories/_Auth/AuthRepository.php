@@ -4,45 +4,28 @@ namespace App\Repositories\_Auth;
 
 use App\Models\User;
 use App\Repositories\_Auth\AuthRepositoryInterface;
-use App\Services\_Response\ApiResponseRepository;
+use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class AuthRepository extends ApiResponseRepository implements AuthRepositoryInterface
+class AuthRepository extends BaseRepository implements AuthRepositoryInterface
 {
-    protected $model;
+   public function getModel()
+   {
+    return User::class;
+   }
 
-    public function __construct(User $user)
+    public function firstByEmail(string $email)
     {
-        $this->model = $user;
+        return $this->model->where('email', $email)->first();
     }
 
-    public function login($input)
+    public function generateToken(string $email)
     {
-        $password = Hash::make($input['password']);
-        
-        $user = $this->model->where('email', $input['email'])->where('password', $password)->first();
-        if (!$user) {
-            return $this->sendErrorResponse('Unauthorized', 401);
-        }
-        // $token = auth(ConstantService::AUTH_USER)->login($user);
-        // $user = auth(ConstantService::AUTH_USER)->user();
-        $data = [
-            // 'token' => $token,
-            // 'user' => [
-            //     'name' => $user->fullname,
-            //     'email' => $user->email,
-            //     'avatar' => $user->avatar,
-            //     'user_group_id' => explode(',', $user->user_group_id),
-            //     'position_id' => $user->position_id,
-            // ],
-            // 'users' => $this->commonService->getAllUser(),
-            // 'products' => $this->commonService->getAllProduct(),
+        $user = $this->firstByEmail($email);
 
-        ];
-        return $this->sendSuccessResponse($data);
+        return $user->createToken('user', ['user-abilities'], now()->addMinutes(config('sanctum.expiration')));
     }
-
 
     public function register(array $data)
     {

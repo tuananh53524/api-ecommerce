@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Services\_Response\ApiResponseRepository;
 
-abstract class BaseRepository extends ApiResponseRepository implements BaseRepositoryInterface
+abstract class BaseRepository implements BaseRepositoryInterface
 {
     //model muốn tương tác
     protected $model;
