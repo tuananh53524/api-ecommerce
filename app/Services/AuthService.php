@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Repositories\_Auth\AuthRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Helper\ApiResponseHelper;
+use App\Repositories\_Auth\AuthRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthService
 {
-    protected $authinterface;
-    public function __construct(AuthRepositoryInterface $authinterface)
+    protected $authRepository;
+    public function __construct(AuthRepository $authRepository)
     {
-        $this->authinterface = $authinterface;
+        $this->authRepository = $authRepository;
     }
 
     public function login($credentials)
@@ -26,7 +26,7 @@ class AuthService
             return ApiResponseHelper::sendErrorResponse('Unauthenticated', Response::HTTP_UNAUTHORIZED);
         }
 
-        $token = $this->authinterface->generateToken($attributes['email']);
+        $token = $this->authRepository->generateToken($attributes['email']);
         // dd($token);
         $data = [
             'access_token' => $token->plainTextToken,
