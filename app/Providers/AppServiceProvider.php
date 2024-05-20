@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\_Auth\AuthRepository;
 use App\Repositories\_Auth\AuthRepositoryInterface;
-use App\Repositories\_Response\ApiResponseInterface;
-use App\Repositories\_Response\ApiResponseRepository;
+use App\Repositories\User\UserRepository;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,13 +15,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(
-            ApiResponseInterface::class,
-            ApiResponseRepository::class,
+            AuthRepositoryInterface::class,
+            AuthRepository::class,
         );
 
         $this->app->singleton(
-            AuthRepositoryInterface::class,
-            AuthRepository::class,
+            UserRepositoryInterface::class,
+            UserRepository::class,
         );
     }
 
