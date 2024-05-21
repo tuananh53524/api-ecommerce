@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Helper\ApiResponseHelper;
 use App\Repositories\_Auth\AuthRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
@@ -22,16 +23,14 @@ class AuthService
             'password' => $credentials['password'],
         ];
 
-        if (!Auth::attempt($attributes)) {
-            return ApiResponseHelper::sendErrorResponse('Unauthenticated', Response::HTTP_UNAUTHORIZED);
+        if (! $token = auth()->attempt($attributes)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        $token = $this->authRepository->generateToken($attributes['email']);
-        // dd($token);
+        
         $data = [
-            'access_token' => $token->plainTextToken,
-            'token_type' => 'Bearer',
-            'expires_at' => $token->accessToken->expires_at->format('d-m-Y H:i:s'),
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60
         ];
         return ApiResponseHelper::sendSuccessResponse($data, Response::HTTP_OK);
     }

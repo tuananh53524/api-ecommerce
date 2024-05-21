@@ -19,7 +19,6 @@ class UserController extends Controller
     public function index(Request $request)
     {   
         $requests = $request->all();
-
         return $this->userService->list($requests);
     }
 
